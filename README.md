@@ -20,7 +20,8 @@ Here we will create an Amazon S3 bucket to hold a static website files and put A
 
 
 ## Architecture Diagram
-![image](https://github.com/jsaless/static-website-on-amazon-s3/assets/128498851/b90f4663-1c16-43bc-a9ed-669e84d54c02)
+![image](https://github.com/jsaless/static-website-on-amazon-s3/assets/128498851/cb784725-7b1e-4f38-96e0-01663b3bc859)
+
 
 ## Step 1:
 ## Step 2:
