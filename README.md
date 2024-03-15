@@ -23,8 +23,8 @@ Here we will create an Amazon S3 bucket to hold a static website files and put A
 ![image](https://github.com/jsaless/static-website-on-amazon-s3/assets/128498851/cb784725-7b1e-4f38-96e0-01663b3bc859)
 
 
-## Step 1:
-## Step 2:
-## Step 3:
-## Step 4:
-## Step 5:
+## Step 1: Create the bucket for your static website
+## Step 2: Create and configure CloudFront distribution
+## Step 3: Upload the web files in the bucket
+## Step 4: Creating a Hosted Zone in Route 53 
+## Step 5: Setting records to our CloudFront domain name in Route 53
