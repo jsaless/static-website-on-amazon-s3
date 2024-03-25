@@ -2,10 +2,10 @@
 
 Deploying your static website on Amazon S3 is a cost-effective solution that is often cheaper than a traditional hosting provider. However we can optimize the availability, security, and reliability of our site using other services to complement this solution.
 
-Here we will create an Amazon S3 bucket to hold a static website files and put Amazon CloudFront distribution to serve the website globally. Amazon Route 53 will manage the resolution of your domain by setting records, and AWS Certificate Manager will provide a valid SSL/TLS certificate for your domain name. The creation of all this will be made with AWS CloudShell/CLI 
+Here we will create an Amazon S3 bucket to hold a static website files and put Amazon CloudFront distribution to serve the website globally. Amazon Route 53 will manage the resolution of your domain by setting records, and AWS Certificate Manager will provide a valid SSL/TLS certificate for your domain name. The creation of all this will be made through AWS CloudShell/CLI 
 
 ### Services used
-- AWS CloudShell
+- AWS CloudShell/CLI
 - Amazon S3
 - CloudFront
 - Route53
@@ -23,6 +23,11 @@ Here we will create an Amazon S3 bucket to hold a static website files and put A
 
 ## Architecture Diagram
 ![image](https://github.com/jsaless/static-website-on-amazon-s3/assets/128498851/cb784725-7b1e-4f38-96e0-01663b3bc859)
+
+## Installation AWS CLI
+
+```curl ```
+
 
 ## Step 1: Create the bucket for your static website
 We can create a bucket with a name of our choice by using the ```s3api``` command to have access of multiples action you can take with S3 Service. In this example we are using the ```create-bucket``` option to create the bucket and ```--bucket``` to set the name.
