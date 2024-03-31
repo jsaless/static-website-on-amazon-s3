@@ -7,7 +7,7 @@ Here we will create an Amazon S3 bucket to hold a static website files and put A
 ### Services used
 - Amazon S3
 - CloudFront
-- Route53
+- Route 53
 - AWS Certificate Manager
 
 ### Prerequistes
