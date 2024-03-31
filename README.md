@@ -18,6 +18,8 @@ Here we will create an Amazon S3 bucket to hold a static website files and put A
 
 >[!TIP]
 >If you want, you can follow along with this [AWS Tutorial](https://docs.aws.amazon.com/AmazonS3/latest/userguide/website-hosting-custom-domain-walkthrough.html) as well
+>[!CAUTION]
+>Some services will have a charge on you. This case applies in Route 53 to buy a domain name and to create a hosted zone and depending of the size of your files stored in S3
 
 
 ## Architecture Diagram
