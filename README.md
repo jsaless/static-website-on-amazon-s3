@@ -27,16 +27,16 @@ Here we will create an Amazon S3 bucket to hold a static website files and put A
 
 ## Step 1: Buy a domain name in Route 53
 If you do not have a domain name you can use **Route 53** to register one. Follow these instructions to access the service and buy your new domain. 
-- Login in [AWS Console](https://console.aws.amazon.com/console/home?nc2=h_ct&src=header-signin)
-- In the console, click in the *search icon* on the top bar and search by the name of the service, Route 53
-- On Route 53 page, in the left hand side, navigate to **Domains > Registered domains**. After that click in **Register domains**
-- Search the domain name in the search bar to check the availability of it, if isn't, you can select other suggested options that Route 53 gives to you![BuyingDomainNameInRoute53](https://github.com/jsaless/static-website-on-amazon-s3/assets/128498851/baad309b-770a-4459-9291-4553271ef858)
-  - In my case I am following with the ```jsaless.com``` domain name
-- After you selected the right domain for you, go in **Proceed to checkout** button, then you can set the duration of the domain name to 1 Year and disable the *auto-renew*. Click in **Next** after that
-- Fill all the information required by the Route 53 to buy the domain and go to the next page
-- Confirm all your data and the domain name information and now you can **Submit** the request for your domain
-  - Will be sent an email to the address specified in the information section to check the reliability of the company/person
-- After the request is processed and accepted by AWS your domain name will be available and a hosted zone will be created automatically for it
+1. Login in [AWS Console](https://console.aws.amazon.com/console/home?nc2=h_ct&src=header-signin)
+2. In the console, click in the *search icon* on the top bar and search by the name of the service, Route 53
+3. On Route 53 page, in the left hand side, navigate to **Domains > Registered domains**. After that click in **Register domains**
+4. Search the domain name in the search bar to check the availability of it, if isn't, you can select other suggested options that Route 53 gives to you![BuyingDomainNameInRoute53](https://github.com/jsaless/static-website-on-amazon-s3/assets/128498851/baad309b-770a-4459-9291-4553271ef858)
+   - In my case I am following with the ```jsaless.com``` domain name
+5. After you selected the right domain for you, go in **Proceed to checkout** button, then you can set the duration of the domain name to 1 Year and disable the *auto-renew*. Click in **Next** after that
+6. Fill all the information required by the Route 53 to buy the domain and go to the next page
+7. Confirm all your data and the domain name information and now you can **Submit** the request for your domain
+   - Will be sent an email to the address specified in the information section to check the reliability of the company/person
+8. After the request is processed and accepted by AWS your domain name will be available and a hosted zone will be created automatically for it
 ## Step 2: Create a bucket in S3 to host the website
 ## Step 2: Create and configure CloudFront distribution
 ## Step 3: Upload the web files in the bucket
