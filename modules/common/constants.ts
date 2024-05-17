@@ -12,3 +12,5 @@ export const awsAccountId = pulumi.output(aws.getCallerIdentity({}).then((caller
 export const awsRegion = aws.getRegionOutput({}).name;
 export const policyVersion = "2012-10-17";
 
+// Prjoect Configs
+export const nameServers = config.requireObject<string[]>("nameServers")
