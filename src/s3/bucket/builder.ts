@@ -23,11 +23,11 @@ export default class BucketBuilder implements IBucketBuilder {
 
     build(): Bucket {
         if(!this.bucket.getAwsComponent()) {
-            const bucket = new aws.s3.BucketV2(this.bucket.getPulumiName(), {
+            const bucketResource = new aws.s3.BucketV2(this.bucket.getPulumiName(), {
                 bucket: this.bucket.getBucket(),
             });
 
-            this.setComponent(bucket);
+            this.setComponent(bucketResource);
         };
 
         return this.bucket;

@@ -53,7 +53,7 @@ export interface IDistributionBuilder {
     setDefaultRootObject(defaultRootObject: pulumi.Input<string>): IDistributionBuilder;
     setViewerCertificate(viewerCertificate: IViewerCertificate): IDistributionBuilder;
     setDefaultCacheBehavior(defaultCacheBehavior: IDefaultCacheBehavior): IDistributionBuilder;
-    setDependsOn(resource: pulumi.Input<pulumi.Resource> | pulumi.Input<pulumi.Input<pulumi.Resource>[]>): void
+    setDependsOn(resource: pulumi.Input<pulumi.Resource> | pulumi.Input<pulumi.Input<pulumi.Resource>[]>): IDistributionBuilder
     build(): IDistribution;
 }; 
 

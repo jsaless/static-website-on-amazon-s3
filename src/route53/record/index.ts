@@ -14,7 +14,7 @@ export class Record implements IRecord {
 
     private records!: pulumi.Input<pulumi.Input<string>[]>;
 
-    private aliases: IRecordAliases;
+    private aliases!: IRecordAliases;
 
     private awsComponent!: aws.route53.Record;
 

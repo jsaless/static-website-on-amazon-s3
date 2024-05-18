@@ -41,7 +41,7 @@ export default class BucketObjectBuilder implements IBucketObjectBuilder {
             const object = new aws.s3.BucketObjectv2(this.object.getPulumiName(), {
                 bucket: this.object.getBucket(),
                 key: this.object.getKey(),
-                source: new pulumi.asset.FileArchive(this.object.getSource()),
+                source: new pulumi.asset.FileAsset(this.object.getSource()),
                 contentType: this.object.getContentType(),
             });
 

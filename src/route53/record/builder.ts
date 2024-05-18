@@ -71,22 +71,33 @@ export class RecordBuilder implements IRecordBuilder {
 
     build(): Record {
         if(!this.record.getAwsComponent()) {
-            const record = new aws.route53.Record(this.record.getPulumiName(), {
-                zoneId: this.record.getZoneId(),
-                ttl: this.record.getTtl(),
-                name: this.record.getName(),
-                type: this.record.getType(),
-                records: this.record.getRecords(),
-                aliases: [{
-                    name: this.record.getAliases().getName(),
-                    zoneId: this.record.getAliases().getZoneId(),
-                    evaluateTargetHealth: this.record.getAliases().getEvaluateTargetHealth(),
-                }]
-            });
+            if (!this.record.getAliases()) {
+                const routeRecords = new aws.route53.Record(this.record.getPulumiName(), {
+                    zoneId: this.record.getZoneId(),
+                    ttl: this.record.getTtl(),
+                    name: this.record.getName(),
+                    type: this.record.getType(),
+                    records: this.record.getRecords(),
+                });
 
-            this.setComponent(record);
+                this.setComponent(routeRecords);
+            } else {
+                const routeRecords = new aws.route53.Record(this.record.getPulumiName(), {
+                    zoneId: this.record.getZoneId(),
+                    ttl: this.record.getTtl(),
+                    name: this.record.getName(),
+                    type: this.record.getType(),
+                    records: this.record.getRecords(),
+                    aliases: [{
+                        name: this.record.getAliases()?.getName(),
+                        zoneId: this.record.getAliases()?.getZoneId(),
+                        evaluateTargetHealth: this.record.getAliases()?.getEvaluateTargetHealth(),
+                    }]
+                });
+
+                this.setComponent(routeRecords);
+            };
         };
-
         return this.record;
     };
 };

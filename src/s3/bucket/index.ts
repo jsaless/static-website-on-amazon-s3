@@ -11,7 +11,7 @@ export class Bucket implements IBucket {
     private awsComponent!: aws.s3.BucketV2;
 
     setPulumiName(name: string): void {
-        this.pulumiName;
+        this.pulumiName = name;
     };
 
     getPulumiName(): string {

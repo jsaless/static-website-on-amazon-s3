@@ -1,2 +1,3 @@
 config:
   aws:region: us-east-1
+  static-website-on-amazon-s3:bucket-domain-name: jsaless.com

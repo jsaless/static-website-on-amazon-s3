@@ -17,7 +17,7 @@ export class BucketObject implements IBucketObject {
     private awsComponent!: aws.s3.BucketObjectv2;
 
     setPulumiName(name: string): void {
-        this.pulumiName;
+        this.pulumiName = name;
     };
 
     getPulumiName(): string {

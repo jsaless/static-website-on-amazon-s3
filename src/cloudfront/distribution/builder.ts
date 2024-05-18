@@ -44,8 +44,9 @@ export class DistributionBuilder implements IDistributionBuilder {
         return this;
     };
 
-    setDependsOn(resource: pulumi.Input<pulumi.Resource> | pulumi.Input<pulumi.Input<pulumi.Resource>[]>): void {
+    setDependsOn(resource: pulumi.Input<pulumi.Resource> | pulumi.Input<pulumi.Input<pulumi.Resource>[]>): IDistributionBuilder {
         this.dependentsResources = resource;
+        return this;
     };
 
     private setComponent(component: aws.cloudfront.Distribution): void {
@@ -94,7 +95,7 @@ export class DistributionBuilder implements IDistributionBuilder {
     };
 };
 
-export class OriginBuilder implements IOriginsBuilder {
+export class OriginsBuilder implements IOriginsBuilder {
     private origins: Origins = new Origins();
 
     setDomainName(domainName: pulumi.Input<string>): IOriginsBuilder {
@@ -139,7 +140,7 @@ export class DefaultCacheBehaviorBuilder implements IDefaultCacheBehaviorBuilder
     };
 
     setCachedMethods(cachedMethods: pulumi.Input<pulumi.Input<string>[]>): IDefaultCacheBehaviorBuilder {
-        this.defaultCacheBehavior.setAllowedMethods(cachedMethods);
+        this.defaultCacheBehavior.setCachedMethods(cachedMethods);
         return this;
     };
     

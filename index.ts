@@ -1,131 +1,121 @@
-import * as aws from "@pulumi/aws";
-import * as pulumi from "@pulumi/pulumi";
+import CertificateBuilder from "./src/acm/certificate/builder";
+import CertificateValidationBuilder from "./src/acm/certificate-validation/builder";
 
-const route53hostedZone = new aws.route53.Zone("public-zone-route53", {
-    name: "jsaless.com",
-});
+import { DistributionBuilder, ViewerCertificateBuilder, OriginsBuilder, DefaultCacheBehaviorBuilder } from "./src/cloudfront/distribution/builder";
+import OriginAccessControlBuilder from "./src/cloudfront/origin-access-control/builder";
 
-const domainNameServers = new aws.route53domains.RegisteredDomain("my-domain-route53", {
-    domainName: "jsaless.com",
-    nameServers: route53hostedZone.nameServers.apply(servers => {
-        return servers.map(server => ({ name: server }));
-    })
-})
+import RegisteredDomainBuilder from "./src/route53/domain/builder";
+import { RecordAliasesBuilder, RecordBuilder} from "./src/route53/record/builder";
+import ZoneBuilder from "./src/route53/zone/builder";
 
-const exampleCertificate = new aws.acm.Certificate("acm-certificate", {
-    domainName: "jsaless.com",
-    validationMethod: "DNS",
-});
+import BucketBuilder from "./src/s3/bucket/builder";
+import BucketObjectBuilder from "./src/s3/object/builder";
+import BucketPolicyBuilder from "./src/s3/policy/builder";
+import { bucketDomainName, bucketPolicy } from "./modules/common/constants"
 
-const validationData = {
-    name: () => exampleCertificate.domainValidationOptions[0]["resourceRecordName"],
-    type: () => exampleCertificate.domainValidationOptions[0]["resourceRecordType"],
-    record: () => exampleCertificate.domainValidationOptions[0]["resourceRecordValue"]
-}
-
-const validationRecord = new aws.route53.Record("validation-records-route53", {
-    zoneId: route53hostedZone.id,
-    ttl: 300,
-    name: validationData.name(),
-    type: validationData.type(),
-    records: [validationData.record()]
-});
-
-const validateCertificate = new aws.acm.CertificateValidation("acm-certificate-validation", {
-    certificateArn: exampleCertificate.arn
-})
-
-const s3Bucket = new aws.s3.BucketV2("bucket-s3", {
-    bucket: "jsaless.com",
-});
-
-const s3BucketContent = new aws.s3.BucketObjectv2("object-bucket-s3", {
-    key: "index.html",
-    contentType: "text/html",
-    bucket: s3Bucket.id,
-    source: new pulumi.asset.FileAsset("./src/index.html")
-})
-
-const cloudFrontOriginAccessOrigin = new aws.cloudfront.OriginAccessControl("origin-access-control-cloudfront", {
-    name: s3Bucket.bucketRegionalDomainName,
-    originAccessControlOriginType: "s3",
-    signingBehavior: "always",
-    signingProtocol: "sigv4"
-})
-
-const cloudFrontDistribution = new aws.cloudfront.Distribution("distribution-cloudfront", {
-    origins: [{
-        domainName: s3Bucket.bucketRegionalDomainName,
-        originId: s3Bucket.id,
-        originAccessControlId: cloudFrontOriginAccessOrigin.id
-    }],
-    aliases: [
-        "jsaless.com"
-    ],
-    priceClass: "PriceClass_100",
-    defaultRootObject: "index.html",
-    enabled: true,
-    restrictions: {
-        geoRestriction: {
-            restrictionType: "none"
-        }
-    },
-    viewerCertificate: {
-        acmCertificateArn: exampleCertificate.arn,
-        sslSupportMethod: "sni-only",
-        minimumProtocolVersion: "TLSv1.2_2021"
-    },
-    defaultCacheBehavior: {
-        allowedMethods: [
-            "GET",
-            "HEAD",
-        ],
-        cachedMethods: [
-            "GET",
-            "HEAD"
-        ],
-        targetOriginId: s3Bucket.id,
-        viewerProtocolPolicy: "redirect-to-https",
-        cachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6"
-    }
-}, {
-    dependsOn: validateCertificate
-});
-
-const s3BucketPolicy = new aws.s3.BucketPolicy("policy-bucket-s3", {
-    policy: aws.iam.getPolicyDocumentOutput({
-        version: "2012-10-17",
-        statements: [
-            {
-                sid: "AllowCloudFrontServicePrincipal",
-                effect: "Allow",
-                principals: [{
-                    type: "Service",
-                    identifiers: ["cloudfront.amazonaws.com"]
-                }],
-                actions: ["s3:GetObject"],
-                resources: [pulumi.interpolate`${s3Bucket.arn}/*`],
-                conditions: [{
-                    test: "StringEquals",
-                    variable: "AWS:SourceArn",
-                    values: [cloudFrontDistribution.arn]
-                }]
-            }
-        ]
-    }).json,
-    bucket: s3Bucket.bucket
-});
-
-const route53RecordToCloudFront = new aws.route53.Record("cloudfront-records-route53", {
-    zoneId: route53hostedZone.id,
-    aliases: [{
-        name: cloudFrontDistribution.domainName,
-        zoneId: cloudFrontDistribution.hostedZoneId,
-        evaluateTargetHealth: false,
-    }],
-    name: "jsaless.com",
-    type: aws.route53.RecordType.A,
-})
-
-
-export const cloudFrontUrl = pulumi.interpolate`https://${cloudFrontDistribution.aliases}`
+module.exports = async() => {
+    const hostedZone = new ZoneBuilder()
+        .setPulumiName("public-zone")
+        .setName(bucketDomainName)
+        .build();
+    
+    new RegisteredDomainBuilder()
+        .setPulumiName("my-domain")
+        .setDomainName(bucketDomainName)
+        .setNameServers(
+            hostedZone.getAwsComponent().nameServers.apply(servers => {
+                return servers.map(server => ({name: server}));
+            })
+        )
+        .build();
+    
+    const acmCertificate = new CertificateBuilder()
+        .setPulumiName("acm-certificate")
+        .setDomainName(bucketDomainName)
+        .setValidationMethod("DNS")
+        .build();
+    
+    new RecordBuilder()
+        .setPulumiName("validation-records")
+        .setZoneId(hostedZone.getAwsComponent().id)
+        .setTtl(300)
+        .setName(acmCertificate.getAwsComponent().domainValidationOptions[0].resourceRecordName)
+        .setType(acmCertificate.getAwsComponent().domainValidationOptions[0].resourceRecordType)
+        .setRecords([acmCertificate.getAwsComponent().domainValidationOptions[0].resourceRecordValue])
+        .build();
+    
+    const validateCertificate = new CertificateValidationBuilder()
+        .setPulumiName("certificate-validation")
+        .setCertificateValidation(acmCertificate.getAwsComponent().arn)
+        .build();
+    
+    const bucket = new BucketBuilder()
+        .setPulumiName("bucket")
+        .setBucket(bucketDomainName)
+        .build();
+    
+    new BucketObjectBuilder()
+        .setPulumiName("bucket-object")
+        .setKey("index.html")
+        .setContentType("text/html")
+        .setBucket(bucket.getAwsComponent().id)
+        .setSource("./modules/components/index.html")
+        .build();
+    
+    const originAccessControl = new OriginAccessControlBuilder()
+        .setPulumiName("origin-access-control")
+        .setName(bucket.getAwsComponent().bucketRegionalDomainName)
+        .setOriginAccessControlOriginType("s3")
+        .setSigningBehavior("always")
+        .setSigningProtocol("sigv4")
+        .build();
+    
+    // CloudFront
+    const origins = new OriginsBuilder()
+        .setDomainName(bucket.getAwsComponent().bucketRegionalDomainName)
+        .setOriginId(bucket.getAwsComponent().id)
+        .setOriginAccessControlId(originAccessControl.getAwsComponent().id)
+        .build();
+    
+    const viewerCertificate = new ViewerCertificateBuilder()
+        .setAcmCertificateArn(acmCertificate.getAwsComponent().arn)
+        .build();
+    
+    const defaultCacheBehavior = new DefaultCacheBehaviorBuilder()
+        .setAllowedMethods(["GET", "HEAD"])
+        .setCachedMethods(["GET", "HEAD"])
+        .setTargetOriginId(bucket.getAwsComponent().id)
+        .setViewerProtocolPolicy("redirect-to-https")
+        .build();
+    
+    const distribution = new DistributionBuilder()
+        .setPulumiName("distribution")
+        .setOrigins(origins)
+        .setAliases([bucketDomainName])
+        .setPriceClass("PriceClass_100")
+        .setDefaultRootObject("index.html")
+        .setViewerCertificate(viewerCertificate)
+        .setDefaultCacheBehavior(defaultCacheBehavior)
+        .setDependsOn(validateCertificate.getAwsComponent())
+        .build();
+    
+    new BucketPolicyBuilder()
+        .setPulumiName("bucket-policy")
+        .setBucket(bucket.getAwsComponent().bucket)
+        .setPolicy(bucketPolicy(distribution.getAwsComponent().id))
+        .build();
+    
+    const recordAliases = new RecordAliasesBuilder()
+        .setName(distribution.getAwsComponent().domainName)
+        .setZoneId(distribution.getAwsComponent().hostedZoneId)
+        .setEvaluateTargetHealth(false)
+        .build();
+    
+    new RecordBuilder()
+        .setPulumiName("records-to-distribution")
+        .setZoneId(hostedZone.getAwsComponent().id)
+        .setAliases(recordAliases)
+        .setName(bucketDomainName)
+        .setType("A")
+        .build();
+};
