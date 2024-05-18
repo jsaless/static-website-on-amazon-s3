@@ -3,7 +3,7 @@ import * as pulumi from "@pulumi/pulumi"
 
 import { IZone } from "./interfaces";
 
-export default class Zone implements IZone {
+export class Zone implements IZone {
     private name!: pulumi.Input<string>;
     
     private awsComponent!: aws.route53.Zone;

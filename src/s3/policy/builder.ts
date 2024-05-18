@@ -1,7 +1,7 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 
-import BucketPolicy from "./index";
+import { BucketPolicy } from "./index";
 import { IBucketPolicy, IBucketPolicyBuilder } from "./interfaces";
 
 export default class BucketPolicyBuilder implements IBucketPolicyBuilder {

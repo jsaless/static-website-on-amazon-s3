@@ -3,7 +3,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 import { IOriginAccessControl } from "./interfaces";
 
-export default class OriginAccessControl implements IOriginAccessControl {
+export class OriginAccessControl implements IOriginAccessControl {
     private pulumiName!: string;
 
     private name!: pulumi.Input<string>;

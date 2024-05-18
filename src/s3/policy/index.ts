@@ -3,7 +3,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 import { IBucketPolicy } from "./interfaces";
 
-export default class BucketPolicy implements IBucketPolicy {
+export class BucketPolicy implements IBucketPolicy {
     private pulumiName!: string;
 
     private policy!: pulumi.Input<string | aws.iam.PolicyDocument>;

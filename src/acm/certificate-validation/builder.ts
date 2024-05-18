@@ -1,7 +1,7 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 
-import CertificateValidation from "./index";
+import { CertificateValidation } from "./index";
 import { ICertificateValidationBuilder } from "./interfaces";
 
 export default class CertificateValidationBuilder implements ICertificateValidationBuilder {

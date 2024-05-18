@@ -1,7 +1,7 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 
-import Bucket from "./index";
+import { Bucket } from "./index";
 import { IBucketBuilder } from "./interfaces";
 
 export default class BucketBuilder implements IBucketBuilder {

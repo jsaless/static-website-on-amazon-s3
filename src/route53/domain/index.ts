@@ -2,7 +2,7 @@ import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 import { IRegisteredDomain } from "./interfaces";
 
-export default class RegisteredDomain implements IRegisteredDomain {
+export class RegisteredDomain implements IRegisteredDomain {
     private domainName!: pulumi.Input<string>;
 
     private nameServers!: pulumi.Input<pulumi.Input<aws.types.input.route53domains.RegisteredDomainNameServer>[]> | undefined;

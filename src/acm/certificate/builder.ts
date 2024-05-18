@@ -2,7 +2,7 @@ import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 
 import { ICertificate, ICertificateBuilder } from "./interfaces";
-import Certificate from "./index";
+import { Certificate } from "./index";
 
 export default class CertificateBuilder implements ICertificateBuilder {
     private certificate: Certificate = new Certificate();

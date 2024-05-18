@@ -3,7 +3,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 import { ICertificate } from "./interfaces";
 
-export default class Certificate implements ICertificate {
+export class Certificate implements ICertificate {
     private name!: pulumi.Input<string>;
 
     private domainName!: pulumi.Input<string>;

@@ -1,7 +1,7 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 
-import RegisteredDomain from "./index";
+import { RegisteredDomain } from "./index";
 import { IRegisteredDomainBuilder } from "./interfaces";
 
 export default class RegisteredDomainBuilder implements IRegisteredDomainBuilder {

@@ -1,7 +1,7 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 
-import OriginAccessControl from "./index";
+import { OriginAccessControl } from "./index";
 import { IOriginAccessControl, IOriginAccessControlBuilder } from "./interfaces";
 
 export default class OriginAccessControlBuilder implements IOriginAccessControlBuilder {

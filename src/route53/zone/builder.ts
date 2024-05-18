@@ -1,7 +1,7 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 
-import Zone from "./index";
+import { Zone } from "./index";
 import { IZoneBuilder } from "./interfaces";
 
 export default class ZoneBuilder implements IZoneBuilder {

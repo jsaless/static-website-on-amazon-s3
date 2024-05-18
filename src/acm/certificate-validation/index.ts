@@ -3,7 +3,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 import { ICertificateValidation } from "./interfaces";
 
-export default class CertificateValidation implements ICertificateValidation {
+export class CertificateValidation implements ICertificateValidation {
     private certificateArn!: pulumi.Input<string>;
 
     private pulumiName!: string;

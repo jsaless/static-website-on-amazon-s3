@@ -3,7 +3,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 import { IBucket } from "./interfaces";
 
-export default class Bucket implements IBucket {
+export class Bucket implements IBucket {
     private pulumiName!: string;
 
     private bucket!: pulumi.Input<string>;
