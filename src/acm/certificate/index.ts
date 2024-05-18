@@ -4,13 +4,23 @@ import * as pulumi from "@pulumi/pulumi";
 import { ICertificate } from "./interfaces";
 
 export default class Certificate implements ICertificate {
-    private name!: string;
+    private name!: pulumi.Input<string>;
 
     private domainName!: pulumi.Input<string>;
     
     private validationMethod!: pulumi.Input<string>;
 
     private awsComponent!: aws.acm.Certificate;
+
+    private pulumiName!: string;
+
+    getPulumiName(): string {
+        return this.pulumiName;
+    };
+
+    setPulumiName(name: string): void {
+        this.pulumiName = name;
+    };
 
     getDomainName(): pulumi.Input<string> {
         return this.domainName;
@@ -20,11 +30,11 @@ export default class Certificate implements ICertificate {
         this.domainName = domainName;
     };
 
-    getName(): string {
+    getName(): pulumi.Input<string> {
         return this.name;
     };
 
-    setName(name: string): void {
+    setName(name: pulumi.Input<string>): void {
         this.name = name;
     };
 

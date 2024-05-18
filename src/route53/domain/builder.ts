@@ -7,24 +7,28 @@ import { IRegisteredDomainBuilder } from "./interfaces";
 export default class RegisteredDomainBuilder implements IRegisteredDomainBuilder {
     private registeredDomain: RegisteredDomain = new RegisteredDomain();
 
-    setDomainName(domainName: string): this {
+    setPulumiName(name: string): IRegisteredDomainBuilder {
+        this.registeredDomain.setPulumiName(name);
+        return this;
+    }
+
+    setDomainName(domainName: pulumi.Input<string>): IRegisteredDomainBuilder {
         this.registeredDomain.setDomainName(domainName);
         return this;
     };
 
-    setNameServers(nameServers: pulumi.Input<pulumi.Input<aws.types.input.route53domains.RegisteredDomainNameServer>[]> | undefined): this {
+    setNameServers(nameServers: pulumi.Input<pulumi.Input<aws.types.input.route53domains.RegisteredDomainNameServer>[]> | undefined): IRegisteredDomainBuilder {
         this.registeredDomain.setNameServers(nameServers);
         return this;
     };
 
-    private setComponent(component: aws.route53domains.RegisteredDomain): this {
+    private setComponent(component: aws.route53domains.RegisteredDomain): void {
         this.registeredDomain.setAwsComponent(component);
-        return this;
     };
 
     build(): RegisteredDomain {
         if(!this.registeredDomain.getAwsComponent()) {
-            const domainNameServers = new aws.route53domains.RegisteredDomain("domain-name-servers", {
+            const domainNameServers = new aws.route53domains.RegisteredDomain(this.registeredDomain.getPulumiName(), {
                 domainName: this.registeredDomain.getDomainName(),
                 nameServers: this.registeredDomain.getNameServers(),
             });

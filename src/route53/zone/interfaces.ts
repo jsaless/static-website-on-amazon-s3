@@ -1,13 +1,17 @@
 import * as aws from "@pulumi/aws";
+import * as pulumi from "@pulumi/pulumi";
 
 export interface IZone {
-    getName(): string ;
+    getPulumiName(): string
+    getName(): pulumi.Input<string>;
     getAwsComponent(): aws.route53.Zone;
-    setName(name: string ): void;
+    setPulumiName(name: string): void;
+    setName(name: pulumi.Input<string>): void;
     setAwsComponent(component: aws.route53.Zone): void;
 };
 
 export interface IZoneBuilder {
-    setName(name: string ): this;
+    setPulumiName(name: string): IZoneBuilder
+    setName(name: pulumi.Input<string> ): IZoneBuilder;
     build(): IZone;
 };

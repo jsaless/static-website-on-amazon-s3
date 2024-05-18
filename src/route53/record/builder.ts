@@ -30,6 +30,11 @@ export class RecordAliasesBuilder implements IRecordAliasesBuilder {
 export class RecordBuilder implements IRecordBuilder {
     private record: Record = new Record();
 
+    setPulumiName(name: string): IRecordBuilder {
+        this.record.setPulumiName(name);
+        return this;
+    }
+
     setName(name: pulumi.Input<string>): IRecordBuilder {
         this.record.setName(name);  
         return this;
@@ -66,7 +71,7 @@ export class RecordBuilder implements IRecordBuilder {
 
     build(): Record {
         if(!this.record.getAwsComponent()) {
-            const record = new aws.route53.Record("record", {
+            const record = new aws.route53.Record(this.record.getPulumiName(), {
                 zoneId: this.record.getZoneId(),
                 ttl: this.record.getTtl(),
                 name: this.record.getName(),

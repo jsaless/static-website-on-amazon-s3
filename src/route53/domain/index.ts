@@ -3,17 +3,27 @@ import * as pulumi from "@pulumi/pulumi";
 import { IRegisteredDomain } from "./interfaces";
 
 export default class RegisteredDomain implements IRegisteredDomain {
-    private domainName!: string;
+    private domainName!: pulumi.Input<string>;
 
     private nameServers!: pulumi.Input<pulumi.Input<aws.types.input.route53domains.RegisteredDomainNameServer>[]> | undefined;
 
     private awsComponent!: aws.route53domains.RegisteredDomain;
 
-    getDomainName(): string {
+    private pulumiName!: string;
+
+    getPulumiName(): string {
+        return this.pulumiName;
+    };
+
+    setPulumiName(name: string): void {
+        this.pulumiName = name;
+    };
+
+    getDomainName(): pulumi.Input<string> {
         return this.domainName;
     };
 
-    setDomainName(domainName: string): void {
+    setDomainName(domainName: pulumi.Input<string>): void {
         this.domainName = domainName;
     };
 

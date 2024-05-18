@@ -7,7 +7,12 @@ import Certificate from "./index";
 export default class CertificateBuilder implements ICertificateBuilder {
     private certificate: Certificate = new Certificate();
 
-    setName(name: string): ICertificateBuilder {
+    setPulumiName(name: string): ICertificateBuilder {
+        this.certificate.setPulumiName(name);
+        return this;
+    }
+
+    setName(name: pulumi.Input<string>): ICertificateBuilder {
         this.certificate.setName(name);
         return this;
     }
@@ -28,7 +33,7 @@ export default class CertificateBuilder implements ICertificateBuilder {
 
     build(): ICertificate {
         if(!this.certificate.getAwsComponent()) {
-            const certificate = new aws.acm.Certificate(this.certificate.getName(), {
+            const certificate = new aws.acm.Certificate(this.certificate.getPulumiName(), {
                 domainName: this.certificate.getDomainName(),
                 validationMethod: this.certificate.getValidationMethod(),
             });
