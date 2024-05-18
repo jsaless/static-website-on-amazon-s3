@@ -2,7 +2,7 @@ import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 
 import { Record, RecordAliases} from "./index";
-import { IRecordBuilder, IRecordAliasesBuilder, IRecordAliases, IRecord } from "./interfaces";
+import { IRecordBuilder, IRecordAliasesBuilder } from "./interfaces";
 
 export class RecordAliasesBuilder implements IRecordAliasesBuilder {
     private recordAliases: RecordAliases = new RecordAliases();
@@ -22,7 +22,7 @@ export class RecordAliasesBuilder implements IRecordAliasesBuilder {
         return this;
     };
 
-    build(): IRecordAliases {
+    build(): RecordAliases {
         return this.recordAliases;
     };
 };
@@ -55,7 +55,7 @@ export class RecordBuilder implements IRecordBuilder {
         return this;
     };
 
-    setAliases(aliases: IRecordAliases): IRecordBuilder {
+    setAliases(aliases: RecordAliases): IRecordBuilder {
         this.record.setAliases(aliases);
         return this;
     };
@@ -64,7 +64,7 @@ export class RecordBuilder implements IRecordBuilder {
         this.record.setAwsComponent(component);
     };
 
-    build(): IRecord {
+    build(): Record {
         if(!this.record.getAwsComponent()) {
             const record = new aws.route53.Record("record", {
                 zoneId: this.record.getZoneId(),
