@@ -8,6 +8,7 @@
         "@pulumi/aws": "^6.36.0",
         "@pulumi/awsx": "^2.0.2",
         "@pulumi/pulumi": "^3.116.1",
+        "@soufantech/pulumi-naming": "^0.2.0",
         "typescript": "^5.0.0"
     }
 }

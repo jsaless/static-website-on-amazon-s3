@@ -1,3 +1,11 @@
 config:
   aws:region: us-east-1
-  static-website-on-amazon-s3:bucket-domain-name: jsaless.com
+  aws:defaultTags:
+    tags:
+      project: static-website-on-s3-stack
+      iac: pulumi
+      repo: https://github.com/jsaless/static-website-on-amazon-s3
+  naming:defaultSuffix: true
+  static-website-on-s3:bucket-domain-name: jsaless.com
+  static-website-on-s3:local-file-path: ./modules/components/index.html
+  static-website-on-s3:local-file-name: index.html

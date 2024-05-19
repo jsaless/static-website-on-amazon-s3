@@ -1,4 +1,4 @@
-name: static-website-on-amazon-s3
+name: static-website-on-s3
 runtime: nodejs
 description: AWS TypeScript Stack to create and server a website hosted in S3
 config:
